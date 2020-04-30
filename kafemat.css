@@ -1,0 +1,68 @@
+   
+div{
+    position: relative;
+    width: 25%;
+    margin-left: 40%;
+    margin-top: 5%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+fieldset{
+    border-radius: 5px;
+}
+.servis{
+    border-radius: 5px;
+    visibility: hidden;
+}
+.komande{
+    width: 10em;
+    height: 3em;
+    border-radius: 5px;
+}
+#suma{
+    position: absolute;
+    width: 8em;
+    top: 16%;
+    left: 50%;
+    border-radius: 5px;
+}
+#uplata{
+    position: absolute;
+    width: 4em;
+    height: 2em;
+    top: 15%;
+    left: 83%;
+    border-radius: 5px;
+}
+#kredit{
+    position: absolute;
+    width: 8em;
+    top: 21%;
+    left: 50%;
+}
+#kusur{
+    position: absolute;
+    width: 4em;
+    height: 2em;
+    top: 30%;
+    left: 83%;
+    border-radius: 5px;
+}
+.kusur{
+    position: absolute;
+    width: 8em;
+    top: 35%;
+    left: 50%;
+}
+#servis{
+    position: absolute;
+    width: 4em;
+    height: 2em;
+    top: 45%;
+    left: 83%;
+    border-radius: 5px;
+
+}
+#priprema{
+    display: inline-block;
+    visibility: hidden;
+}

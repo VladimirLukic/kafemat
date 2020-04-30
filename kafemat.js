@@ -28,14 +28,13 @@ let kafemat={
         }
     },
     panel:function(){
-        // let komande = document.querySelectorAll(".komande"), a=komande.length;
         let a=komande.length
         let display = document.querySelector("#priprema");
         let stanje = localStorage.getItem("kredit"), novo_stanje;
         for(let i=0;i<a;i++){
             komande[i].innerHTML = this.proizvodi[i].naziv +"  "+ this.proizvodi[i].cena;
             komande[i].onclick = function(){
-                if(kafemat.proizvodi[i].cena>stanje){
+                if(kafemat.proizvodi[i].cena>stanje || stanje=="NaN" || stanje=="null"){
                     display.style.visibility = "visible";
                     display.innerHTML = "Not enough credit !";
                     return;
@@ -46,14 +45,14 @@ let kafemat={
                     novo_stanje = stanje - kafemat.proizvodi[i].cena;
                     kafemat.proizvodi[i].kolicina--;
                     localStorage.setItem("proizvodi", JSON.stringify(kafemat.proizvodi));
-                    localStorage.setItem("kredit", novo_stanje);
+                    localStorage.setItem("kredit", JSON.stringify(novo_stanje));
                     setTimeout(function(){
                         location.reload();
-                    }, 10000);
+                    }, 5000);
                 }
                 setInterval(function(){
                     display.innerHTML = "Baverage ready 😊";
-                },8000);
+                },3000);
             }
         }                           
     },
@@ -67,7 +66,7 @@ let kafemat={
     },
     uplata:function(){
         let kredit = parseInt(document.querySelector("#suma").value);
-        if(kafemat.stanje==="NaN" || kafemat.stanje==="undefined"){
+        if(kafemat.stanje==="NaN" || kafemat.stanje==="undefined" || kafemat.stanje==='null'){
             kafemat.stanje=0;
         }
         let suma = parseInt(kafemat.stanje);
@@ -78,6 +77,7 @@ let kafemat={
     kusur:function(){
         let kusur = localStorage.getItem("kredit");
         localStorage.setItem("kredit", 0);
+        komande.forEach(el=>el.onclick='disabled');
         document.querySelector("#kredit").innerHTML = "Credit: "+0;
         if(kusur==="NaN" || kusur==="undefined" || kusur==0)
         document.querySelector(".kusur").innerHTML = "No change";
@@ -86,6 +86,7 @@ let kafemat={
         setTimeout(()=>location.reload(),4000);
     },
     servis:function(){
+        a=this.proizvodi.length
         for(let i=0;i<a;i++){
             if(this.proizvodi[i].naziv.toLowerCase() == inputi[0].value.toLowerCase()){
                 this.proizvodi[i].naziv = inputi[1].value.charAt(0).toUpperCase() + inputi[1].value.slice(1);
@@ -102,8 +103,10 @@ let kafemat={
 kafemat.panel();
 kafemat.prikaz_stanja();
 kafemat.stanje_proizvoda();
-a=kafemat.proizvodi.length
 document.querySelector("#uplata").onclick = function(){
+    let kredit = document.querySelector("#suma").value;
+    if(kredit=='')
+    return;
     kafemat.uplata();
     document.querySelector('#suma').value='';
 };
@@ -113,6 +116,7 @@ document.querySelector("#kusur").onclick = function(){
 };
 
 document.querySelector("#servis").onclick = function(){
+    komande.forEach(el=>el.onclick='disabled');
     if(swich==0){
     document.querySelector(".servis").style.visibility = "visible";
     inputi[0].focus();

@@ -1,13 +1,24 @@
-   
-div{
-    position: relative;
-    width: 25%;
-    margin-left: 40%;
-    margin-top: 5%;
+body{
+    text-align: center;
+}
+div.omot{
+    display: inline-block;
+    background-image: url('kafemat.jpg');
+    border: 1px solid black;
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px 2px rgba(40, 40, 40, 0.6);
+    padding-left: 1em;
     font-family: Arial, Helvetica, sans-serif;
 }
-fieldset{
-    border-radius: 5px;
+div #komande, #tasteri{
+    display: inline-block;
+}
+div #komande{
+    float: left;
+}
+div #tasteri{
+    margin-top: 20px;
+    margin-left: 20px;
 }
 .servis{
     border-radius: 5px;
@@ -19,50 +30,36 @@ fieldset{
     border-radius: 5px;
 }
 #suma{
-    position: absolute;
     width: 8em;
-    top: 16%;
-    left: 50%;
     border-radius: 5px;
+    margin-bottom: 10px;
 }
 #uplata{
-    position: absolute;
-    width: 4em;
+    width: 6em;
     height: 2em;
-    top: 15%;
-    left: 83%;
     border-radius: 5px;
 }
 #kredit{
-    position: absolute;
     width: 8em;
-    top: 21%;
-    left: 50%;
 }
 #kusur{
-    position: absolute;
-    width: 4em;
+    width: 6em;
     height: 2em;
-    top: 30%;
-    left: 83%;
     border-radius: 5px;
 }
 .kusur{
-    position: absolute;
     width: 8em;
-    top: 35%;
-    left: 50%;
 }
 #servis{
-    position: absolute;
-    width: 4em;
+    width: 6em;
     height: 2em;
-    top: 45%;
-    left: 83%;
     border-radius: 5px;
 
 }
 #priprema{
     display: inline-block;
+    margin: 0;
+    height: 80px;
+    width: 150px;
     visibility: hidden;
 }

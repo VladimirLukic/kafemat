@@ -4,6 +4,8 @@ body{
 div.omot{
     display: inline-block;
     background-image: url('kafemat.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
     border: 1px solid black;
     border-radius: 4px;
     box-shadow: 2px 2px 2px 2px rgba(40, 40, 40, 0.6);
@@ -41,6 +43,7 @@ div #tasteri{
 }
 #kredit{
     width: 8em;
+    color: white;
 }
 #kusur{
     width: 6em;
@@ -49,12 +52,13 @@ div #tasteri{
 }
 .kusur{
     width: 8em;
+    height: 2em;
+    color: white;
 }
 #servis{
     width: 6em;
     height: 2em;
     border-radius: 5px;
-
 }
 #priprema{
     display: inline-block;
@@ -62,4 +66,5 @@ div #tasteri{
     height: 80px;
     width: 150px;
     visibility: hidden;
+    color: white;
 }

@@ -1,16 +1,19 @@
-// --------pokrenuti samo prilikom inicijalizacije---------//
-// let napitci=[
-//             {naziv:"Espresso", cena:30, kolicina:50},
-//             {naziv:"Machiato",cena:40, kolicina:50},
-//             {naziv:"Kapuchino",cena:45, kolicina:50},
-//             {naziv:"Kapuchino with chocolate",cena:50, kolicina:50},
-//             {naziv:"Irish coffee",cena:70, kolicina:50},
-//             {naziv:"Irish coffee_strong",cena:75, kolicina:50},
-//             {naziv:"NES",cena:40, kolicina:50},
-//             {naziv:"Tea",cena:40, kolicina:50},
-//             {naziv:"Hot wather",cena:10, kolicina:50},
-//         ];
-// localStorage.setItem("proizvodi", JSON.stringify(napitci));
+function inicijalizacija(){
+    let napitci=[
+        {naziv:"Espresso", cena:30, kolicina:50},
+        {naziv:"Machiato",cena:40, kolicina:50},
+        {naziv:"Kapuchino",cena:45, kolicina:50},
+        {naziv:"Kapuchino with chocolate",cena:50, kolicina:50},
+        {naziv:"Irish coffee",cena:70, kolicina:50},
+        {naziv:"Irish coffee_strong",cena:75, kolicina:50},
+        {naziv:"NES",cena:40, kolicina:50},
+        {naziv:"Tea",cena:40, kolicina:50},
+        {naziv:"Hot wather",cena:10, kolicina:50},
+    ];
+    localStorage.setItem("proizvodi", JSON.stringify(napitci));
+}
+// --------pokrenuti samo prilikom inicijalizacije programa---------//
+// inicijalizacija();
 
 let komande = document.querySelectorAll(".komande");
 let inputi = document.querySelectorAll(".input");
@@ -24,6 +27,9 @@ let kafemat={
             if(this.proizvodi[i].kolicina<10){
                 komande[i].innerHTML += "<br>preostala kol. "+this.proizvodi[i].kolicina;
                 komande[i].style.background = "#FF9D87";
+            }
+            if(this.proizvodi[i].kolicina<=0){
+                komande[i].onclick='disabled';
             }
         }
     },
@@ -40,8 +46,8 @@ let kafemat={
                     return;
                 }
                 if(komande[i].innerHTML==komande[i].innerHTML){
+                    komande.forEach(el=>el.onclick='disabled');
                     display.style.visibility = "visible";
-                    display.innerHTML = "Preparing: " + kafemat.proizvodi[i].naziv + " !" + "<br>" + "Please wait...";
                     novo_stanje = stanje - kafemat.proizvodi[i].cena;
                     kafemat.proizvodi[i].kolicina--;
                     localStorage.setItem("proizvodi", JSON.stringify(kafemat.proizvodi));
@@ -85,7 +91,24 @@ let kafemat={
         document.querySelector(".kusur").innerHTML = "Your change: "+kusur;
         setTimeout(()=>location.reload(),4000);
     },
+
     servis:function(){
+        komande.forEach(el=>el.onclick='disabled');
+        if(swich==0){
+        document.querySelector(".servis").style.visibility = "visible";
+        document.querySelector("#servis").style.background = "#FF9D87";
+        inputi[0].focus();
+        swich=1;
+        return;
+        }
+        if(swich==1){
+        document.querySelector(".servis").style.visibility = "hidden";
+        swich=0;
+        location.reload();
+        return;
+        }
+    },
+    dopuna:function(){
         a=this.proizvodi.length
         for(let i=0;i<a;i++){
             if(this.proizvodi[i].naziv.toLowerCase() == inputi[0].value.toLowerCase()){
@@ -103,6 +126,8 @@ let kafemat={
 kafemat.panel();
 kafemat.prikaz_stanja();
 kafemat.stanje_proizvoda();
+
+// taster za uplatu kredita
 document.querySelector("#uplata").onclick = function(){
     let kredit = document.querySelector("#suma").value;
     if(kredit=='')
@@ -111,29 +136,20 @@ document.querySelector("#uplata").onclick = function(){
     document.querySelector('#suma').value='';
 };
 
+// taster za kusur
 document.querySelector("#kusur").onclick = function(){
     kafemat.kusur();
 };
 
+// taster za servis
 document.querySelector("#servis").onclick = function(){
-    komande.forEach(el=>el.onclick='disabled');
-    if(swich==0){
-    document.querySelector(".servis").style.visibility = "visible";
-    inputi[0].focus();
-    swich=1;
-    return;
-    }
-    if(swich==1){
-    document.querySelector(".servis").style.visibility = "hidden";
-    swich=0;
-    location.reload();
-    return;
-    }
-};
-
-document.querySelector("#posalji").onclick = function(){
     kafemat.servis();
 };
 
+// taster za dopunu proizvoda
+document.querySelector("#posalji").onclick = function(){
+    kafemat.dopuna();
+};
 
-console.log(kafemat.proizvodi);
+
+// console.log(kafemat.proizvodi);

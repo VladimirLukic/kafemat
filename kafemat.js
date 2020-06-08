@@ -10,17 +10,18 @@ function inicijalizacija(){
         {naziv:"TEA",cena:40, kolicina:50},
         {naziv:"HOT WATHER",cena:10, kolicina:50},
     ];
-    localStorage.setItem("proizvodi", JSON.stringify(napitci));
+    sessionStorage.setItem("proizvodi", JSON.stringify(napitci));
 }
-// --------pokrenuti samo prilikom inicijalizacije programa---------//
-// inicijalizacija();
+(JSON.parse(sessionStorage.getItem("proizvodi")) == null)? inicijalizacija():'';
 
 let komande = document.querySelectorAll(".komande");
 let inputi = document.querySelectorAll(".input");
 let swich=0;
 
+
 let kafemat={
-    proizvodi:JSON.parse(localStorage.getItem("proizvodi")),
+    proizvodi:JSON.parse(sessionStorage.getItem("proizvodi")),
+    stanje:sessionStorage.getItem("kredit"),
     stanje_proizvoda:function(){
         len=this.proizvodi.length;
         for(let i=0;i<len;i++){
@@ -36,7 +37,8 @@ let kafemat={
     panel:function(){
         let a=komande.length
         let display = document.querySelector("#priprema");
-        let stanje = localStorage.getItem("kredit"), novo_stanje;
+        let stanje, novo_stanje;
+        (!parseInt(this.stanje))? stanje = 0: stanje = parseInt(this.stanje);
         // let solja = document.createElement('IMG');
         // solja.src='solja.jpg';
         // solja.width='20px';
@@ -60,9 +62,10 @@ let kafemat={
                     // display.append(solja);
                     document.querySelector("#kredit").style.display = 'none';
                     novo_stanje = stanje - kafemat.proizvodi[i].cena;
+                    console.log(novo_stanje);
                     kafemat.proizvodi[i].kolicina--;
-                    localStorage.setItem("proizvodi", JSON.stringify(kafemat.proizvodi));
-                    localStorage.setItem("kredit", JSON.stringify(novo_stanje));
+                    sessionStorage.setItem("proizvodi", JSON.stringify(kafemat.proizvodi));
+                    sessionStorage.setItem("kredit", JSON.stringify(novo_stanje));
                     setTimeout(function(){
                         location.reload();
                     }, 7000);
@@ -75,25 +78,23 @@ let kafemat={
     },
     prikaz_stanja:function(){
         document.querySelector("#suma").focus();
-        this.stanje=localStorage.getItem("kredit");
-        if(this.stanje>=0)
-            document.querySelector("#kredit").innerHTML = "CREDIT  "+this.stanje;
-        else
-            document.querySelector("#kredit").innerHTML = "CREDIT  "+0;
+        this.stanje=sessionStorage.getItem("kredit");
+        (this.stanje == null || this.stanje == NaN)? document.querySelector("#kredit").innerHTML = "CREDIT  "+0:
+        (this.stanje>=0)? document.querySelector("#kredit").innerHTML = "CREDIT  "+this.stanje:'';
     },
-    uplata:function(){
-        let kredit = parseInt(document.querySelector("#suma").value);
-        if(kafemat.stanje==="NaN" || kafemat.stanje==="undefined" || kafemat.stanje==='null'){
+    uplata:function(kredit){
+        // let kredit = parseInt(document.querySelector("#suma").value);
+        if(kafemat.stanje===NaN || kafemat.stanje===undefined || kafemat.stanje===null){
             kafemat.stanje=0;
         }
         let suma = parseInt(kafemat.stanje);
         suma +=kredit;
-        localStorage.setItem("kredit", suma)
+        sessionStorage.setItem("kredit", suma)
         location.reload();
     },
     kusur:function(){
-        let kusur = localStorage.getItem("kredit");
-        localStorage.setItem("kredit", 0);
+        let kusur = sessionStorage.getItem("kredit");
+        sessionStorage.setItem("kredit", 0);
         komande.forEach(el=>el.onclick='disabled');
         document.querySelector("#kredit").innerHTML = "CREDIT "+0;
         if(kusur==="NaN" || kusur==="undefined" || kusur==0)
@@ -128,7 +129,7 @@ let kafemat={
                 this.proizvodi[i].kolicina = inputi[3].value
             }
         }
-        localStorage.setItem("proizvodi", JSON.stringify(kafemat.proizvodi));
+        sessionStorage.setItem("proizvodi", JSON.stringify(kafemat.proizvodi));
         inputi.forEach(el=>el.value="");
         inputi[0].focus();
     }
@@ -140,11 +141,11 @@ kafemat.stanje_proizvoda();
 
 // taster za uplatu kredita
 document.querySelector("#uplata").onclick = function(){
-    let kredit = document.querySelector("#suma").value;
+    let kredit = parseInt(document.querySelector("#suma").value);
     if(kredit=='')
     return;
-    kafemat.uplata();
-    document.querySelector('#suma').value='';
+    kafemat.uplata(kredit);
+    document.querySelector("#suma").value = '';
 };
 
 // taster za kusur

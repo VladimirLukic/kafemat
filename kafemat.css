@@ -77,7 +77,7 @@ div #tasteri{
     height: 2em;
     color: white;
 }
-#servis{
+#servis, #start{
     width: 6em;
     height: 2em;
     border-radius: 5px;
